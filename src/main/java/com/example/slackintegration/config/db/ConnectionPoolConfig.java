@@ -48,11 +48,11 @@ public class ConnectionPoolConfig {
         config.setDriverClassName(driverClassName);
         
         // Connection pool settings
-        config.setMaximumPoolSize(10);
-        config.setMinimumIdle(5);
-        config.setIdleTimeout(30000);
-        config.setConnectionTimeout(30000);
-        config.setMaxLifetime(1800000);
+        config.setMaximumPoolSize(Integer.parseInt(env.getProperty("spring.datasource.hikari.maximum-pool-size", "10")));
+        config.setMinimumIdle(Integer.parseInt(env.getProperty("spring.datasource.hikari.minimum-idle", "5")));
+        config.setIdleTimeout(Integer.parseInt(env.getProperty("spring.datasource.hikari.idle-timeout", "30000")));
+        config.setConnectionTimeout(Integer.parseInt(env.getProperty("spring.datasource.hikari.connection-timeout", "30000")));
+        config.setMaxLifetime(Integer.parseInt(env.getProperty("spring.datasource.hikari.max-lifetime", "1800000")));
         
         // Connection testing
         config.setConnectionTestQuery("SELECT 1");
