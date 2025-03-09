@@ -120,11 +120,54 @@ curl -X DELETE http://localhost:8080/api/slack/1
 
 ## Database
 
-The application uses an H2 in-memory database by default. You can access the H2 console at http://localhost:8080/h2-console with these credentials:
+The application uses Flyway for database migrations. Migration scripts are located in `src/main/resources/db/migration`.
+
+### PostgreSQL
+
+By default, the application is configured to use PostgreSQL. Make sure you have PostgreSQL installed and running, and create a database named `slackdb`:
+
+```bash
+sudo -u postgres psql -c "CREATE DATABASE slackdb;"
+```
+
+### H2 (Development)
+
+For development, you can switch to H2 in-memory database by updating the `application.properties` file:
+
+```properties
+# H2 Database configuration (for development)
+spring.datasource.url=jdbc:h2:mem:slackdb
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.datasource.driver-class-name=org.h2.Driver
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# Comment out PostgreSQL configuration
+# spring.datasource.url=jdbc:postgresql://localhost:5432/slackdb
+# spring.datasource.username=postgres
+# spring.datasource.password=postgres
+# spring.datasource.driver-class-name=org.postgresql.Driver
+
+# Update dialect
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
+```
+
+You can access the H2 console at http://localhost:8090/h2-console with these credentials:
 
 - JDBC URL: `jdbc:h2:mem:slackdb`
 - Username: `sa`
 - Password: `password`
+
+### Creating New Migrations
+
+To create a new migration:
+
+1. Create a new SQL file in `src/main/resources/db/migration`
+2. Name it following the Flyway naming convention: `V{version}__{description}.sql`
+   - Example: `V3__Add_user_column.sql`
+3. Write your SQL migration script
+4. Run the application, and Flyway will automatically apply the migration
 
 ## License
 

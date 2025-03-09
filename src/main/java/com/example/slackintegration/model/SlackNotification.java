@@ -4,10 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "slack_notification")
 public class SlackNotification {
 
     @Id
@@ -15,20 +18,30 @@ public class SlackNotification {
     private Long id;
 
     @NotBlank(message = "Channel is required")
+    @Column(name = "channel", nullable = false)
     private String channel;
 
     @NotBlank(message = "Message is required")
+    @Column(name = "message", nullable = false, columnDefinition = "TEXT")
     private String message;
 
+    @Column(name = "username")
     private String username;
     
+    @Column(name = "icon_emoji")
     private String iconEmoji;
     
+    @Column(name = "sent_at")
     private LocalDateTime sentAt;
     
+    @Column(name = "sent")
     private boolean sent;
     
+    @Column(name = "response_message", columnDefinition = "TEXT")
     private String responseMessage;
+    
+    @Column(name = "tags")
+    private String tags;
 
     // Constructors
     public SlackNotification() {
@@ -103,5 +116,13 @@ public class SlackNotification {
 
     public void setResponseMessage(String responseMessage) {
         this.responseMessage = responseMessage;
+    }
+    
+    public String getTags() {
+        return tags;
+    }
+    
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 } 
